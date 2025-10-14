@@ -1,0 +1,1372 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <link
+            rel="icon"
+            href="https://badelco.co/wp-content/uploads/2019/10/flor-trans-.png"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Badelco SOAT - Cotizador en Línea</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            :root {
+                --primary-color: #272626;
+                --secondary-color: #e25532;
+                --accent-color: #e25532;
+                --success-color: #e25532;
+                --error-color: #ef4444;
+                --text-dark: #1f2937;
+                --text-light: #6b7280;
+                --bg-light: #f9fafb;
+                --bg-white: #ffffff;
+                --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    sans-serif;
+                background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+                min-height: 100vh;
+                color: var(--text-dark);
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            /* Header */
+            .header {
+                background: var(--bg-white);
+                padding: 20px 0;
+                box-shadow: var(--shadow);
+                margin-bottom: 40px;
+                border-radius: 0 0 20px 20px;
+            }
+
+            .header-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 40px;
+            }
+
+            .logo {
+                font-size: 28px;
+                font-weight: 800;
+                color: var(--primary-color);
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+                background: var(--secondary-color);
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 24px;
+            }
+
+            /* Main Content */
+            .main-content {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+                margin-bottom: 40px;
+            }
+
+            @media (max-width: 968px) {
+                .main-content {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            /* Card Styles */
+            .card {
+                background: var(--bg-white);
+                border-radius: 20px;
+                padding: 30px;
+                box-shadow: var(--shadow-lg);
+                transition:
+                    transform 0.3s ease,
+                    box-shadow 0.3s ease;
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15);
+            }
+
+            .card-title {
+                font-size: 24px;
+                font-weight: 700;
+                color: var(--primary-color);
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            /* Form Styles */
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .form-label {
+                display: block;
+                font-weight: 600;
+                color: var(--text-dark);
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+
+            .form-input {
+                width: 100%;
+                padding: 12px 16px;
+                border: 2px solid #e5e7eb;
+                border-radius: 10px;
+                font-size: 16px;
+                transition: all 0.3s ease;
+                background: var(--bg-light);
+            }
+
+            .form-input:focus {
+                outline: none;
+                border-color: var(--secondary-color);
+                background: var(--bg-white);
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            }
+
+            .form-input::placeholder {
+                color: var(--text-light);
+            }
+
+            /* Button Styles */
+            .btn {
+                padding: 12px 24px;
+                border: none;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .btn-primary {
+                background: var(--secondary-color);
+                color: white;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .btn-primary:hover {
+                background: var(--primary-color);
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.3);
+            }
+
+            .btn-primary:disabled {
+                background: #9ca3af;
+                cursor: not-allowed;
+                transform: none;
+                box-shadow: none;
+            }
+
+            .btn-secondary {
+                background: var(--success-color);
+                color: white;
+            }
+
+            .btn-secondary:hover {
+                background: #059669;
+            }
+
+            /* Nuevo estilo para el botón de expedición */
+            .btn-expedition {
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                color: white;
+                font-weight: 700;
+                box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            }
+
+            .btn-expedition:hover {
+                background: linear-gradient(135deg, #059669 0%, #047857 100%);
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            }
+
+            /* Loading Spinner */
+            .spinner {
+                display: none;
+                width: 20px;
+                height: 20px;
+                border: 3px solid rgba(235, 134, 75, 0.445);
+                border-radius: 50%;
+                border-top-color: white;
+                animation: spin 1s ease-in-out infinite;
+            }
+
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            /* Results Section */
+            .results {
+                display: none;
+                animation: fadeIn 0.5s ease;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .result-item {
+                display: flex;
+                justify-content: space-between;
+                padding: 15px 0;
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+            .result-item:last-child {
+                border-bottom: none;
+            }
+
+            .result-total {
+                background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+                margin: 10px -15px 0 -15px;
+                padding: 20px 15px;
+                border-radius: 10px;
+                border: 2px solid var(--secondary-color);
+                font-weight: 700;
+                font-size: 18px;
+            }
+
+            .result-total .result-label {
+                color: var(--primary-color);
+            }
+
+            .result-total .result-value {
+                color: var(--secondary-color);
+                font-weight: 800;
+            }
+
+            .result-label {
+                font-weight: 600;
+                color: var(--text-dark);
+            }
+
+            .result-value {
+                color: var(--text-dark);
+                font-weight: 500;
+            }
+
+            .price-highlight {
+                font-size: 32px;
+                font-weight: 800;
+                color: var(--secondary-color);
+                text-align: center;
+                margin: 20px 0;
+            }
+
+            /* Payment Info */
+            .payment-info {
+                background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+                border-radius: 15px;
+                padding: 25px;
+                margin-top: 20px;
+            }
+
+            .payment-title {
+                font-size: 18px;
+                font-weight: 700;
+                color: var(--primary-color);
+                margin-bottom: 15px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .account-info {
+                background: var(--bg-white);
+                border-radius: 10px;
+                padding: 15px;
+                margin-bottom: 15px;
+                border: 1px solid #e5e7eb;
+            }
+
+            .account-bank {
+                font-weight: 700;
+                color: var(--primary-color);
+                margin-bottom: 5px;
+            }
+
+            .account-number {
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--text-dark);
+                font-family: "Courier New", monospace;
+            }
+
+            .account-type {
+                color: var(--text-light);
+                font-size: 14px;
+                margin-top: 5px;
+            }
+
+            /* Alert Styles */
+            .alert {
+                padding: 15px 20px;
+                border-radius: 10px;
+                margin-bottom: 20px;
+                display: none;
+                animation: slideDown 0.3s ease;
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .alert-error {
+                background: #fee;
+                color: var(--error-color);
+                border: 1px solid #fcc;
+            }
+
+            .alert-success {
+                background: #d1fae5;
+                color: #065f46;
+                border: 1px solid #a7f3d0;
+            }
+
+            /* Contenedor de botones de acción */
+            .action-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 20px;
+            }
+
+            @media (min-width: 640px) {
+                .action-buttons {
+                    flex-direction: row;
+                    gap: 15px;
+                }
+
+                .action-buttons .btn {
+                    flex: 1;
+                }
+            }
+
+            /* Debug Info - Oculto */
+            .debug-info {
+                display: none !important;
+            }
+
+            /* Print Styles */
+            @media print {
+                body {
+                    background: white;
+                }
+
+                .header {
+                    box-shadow: none;
+                    border-bottom: 2px solid #e5e7eb;
+                }
+
+                .card {
+                    box-shadow: none;
+                    border: 1px solid #e5e7eb;
+                }
+
+                .btn {
+                    display: none;
+                }
+
+                #cotizadorForm {
+                    display: none;
+                }
+            }
+
+            /* Responsive Design */
+            @media (max-width: 640px) {
+                .container {
+                    padding: 10px;
+                }
+
+                .header-content {
+                    padding: 0 20px;
+                }
+
+                .card {
+                    padding: 20px;
+                }
+
+                .logo {
+                    font-size: 24px;
+                }
+
+                .price-highlight {
+                    font-size: 28px;
+                }
+            }
+            /*Boton WhatsApp */
+            .whatsapp-button {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 60px;
+                height: 60px;
+                background-color: #25d366;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                transition: all 0.3s ease;
+                z-index: 1000;
+                text-decoration: none;
+                animation: pulse 2s infinite;
+            }
+
+            .whatsapp-button:hover {
+                transform: scale(1.1);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            }
+
+            .whatsapp-button svg {
+                width: 32px;
+                height: 32px;
+                fill: white;
+            }
+
+            @keyframes pulse {
+                0% {
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                }
+                50% {
+                    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.5);
+                }
+                100% {
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                }
+            }
+
+            /* Tooltip opcional */
+            .whatsapp-button::before {
+                content: "¡Escríbenos!";
+                position: absolute;
+                right: 70px;
+                top: 50%;
+                transform: translateY(-50%);
+                background-color: #333;
+                color: white;
+                padding: 8px 12px;
+                border-radius: 4px;
+                font-size: 12px;
+                white-space: nowrap;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .whatsapp-button:hover::before {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            /* Flecha del tooltip */
+            .whatsapp-button::after {
+                content: "";
+                position: absolute;
+                right: 60px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 0;
+                height: 0;
+                border-left: 5px solid #333;
+                border-top: 5px solid transparent;
+                border-bottom: 5px solid transparent;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .whatsapp-button:hover::after {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .whatsapp-button {
+                    bottom: 15px;
+                    right: 15px;
+                    width: 50px;
+                    height: 50px;
+                }
+
+                .whatsapp-button svg {
+                    width: 28px;
+                    height: 28px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header class="header">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <div class="logo-icon">🚗</div>
+                    <span>Badelco SOAT</span>
+                </a>
+            </div>
+        </header>
+        <!-- WhatsApp -->
+        <a
+            href="https://wa.me/573128433999?text=Hola%20Badelco,%20estoy%20interesad@%20en%20obtener%20el%20SOAT"
+            class="whatsapp-button"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            <svg viewBox="0 0 24 24">
+                <path
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.109"
+                />
+            </svg>
+        </a>
+
+        <div class="container">
+            <div class="main-content">
+                <!-- Formulario de Cotización -->
+                <div class="card">
+                    <h2 class="card-title">
+                        <span>📋</span>
+                        SOAT en Línea
+                    </h2>
+
+                    <div id="alertContainer"></div>
+
+                    <form id="cotizadorForm">
+                        <div class="form-group">
+                            <label class="form-label" for="placa"
+                                >Placa del Vehículo</label
+                            >
+                            <input
+                                type="text"
+                                id="placa"
+                                name="placa"
+                                class="form-input"
+                                placeholder="ABC123"
+                                required
+                                maxlength="6"
+                                style="text-transform: uppercase"
+                            />
+                            <small
+                                style="
+                                    color: var(--text-light);
+                                    font-size: 12px;
+                                "
+                                >Formato: 3 letras + 3 números (ej:
+                                ABC123)</small
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="documentType"
+                                >Tipo de Documento</label
+                            >
+                            <select
+                                id="documentType"
+                                name="documentType"
+                                class="form-input"
+                                required
+                            >
+                                <option value="">Seleccione...</option>
+                                <option value="CC">Cédula de Ciudadanía</option>
+                                <option value="CE">
+                                    Cédula de Extranjería
+                                </option>
+                                <option value="NIT">NIT</option>
+                                <option value="PA">Pasaporte</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="documentNumber"
+                                >Número de Documento</label
+                            >
+                            <input
+                                type="text"
+                                id="documentNumber"
+                                name="documentNumber"
+                                class="form-input"
+                                placeholder="1234567890"
+                                required
+                            />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <span>Cotizar SOAT</span>
+                            <span class="spinner"></span>
+                        </button>
+                    </form>
+
+                    <div id="debugInfo" class="debug-info"></div>
+                </div>
+
+                <!-- Resultados de Cotización -->
+                <div class="card">
+                    <h2 class="card-title">
+                        <span>💰</span>
+                        Resultados de Cotización
+                    </h2>
+
+                    <div id="results" class="results">
+                        <div class="price-highlight" id="priceDisplay">$0</div>
+
+                        <div id="resultDetails"></div>
+
+                        <!--<div class="payment-info">
+                            <div id="paymentAccounts"></div>
+
+                            <div
+                                style="
+                                    margin-top: 20px;
+                                    padding: 15px;
+                                    background: #fef3c7;
+                                    border-radius: 8px;
+                                "
+                            >
+                                <h4
+                                    style="
+                                        font-size: 14px;
+                                        font-weight: 600;
+                                        color: #92400e;
+                                        margin-bottom: 10px;
+                                    "
+                                >
+                                    📱 Instrucciones:
+                                </h4>
+                                <ol
+                                    id="paymentInstructions"
+                                    style="
+                                        margin: 0;
+                                        padding-left: 20px;
+                                        font-size: 14px;
+                                        color: #92400e;
+                                    "
+                                ></ol>
+                            </div>
+                        </div>-->
+
+                        <!-- Botones de acción mejorados -->
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" id="captureBtn">
+                                <span>📸</span>
+                                <span>Capturar Pantalla</span>
+                            </button>
+
+                            <button class="btn btn-expedition" id="expedirBtn">
+                                <span>✅</span>
+                                <span>Expedir SOAT</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Configuration - VERSIÓN CORREGIDA
+            const PROXY_URL = "https://test-production-2125.up.railway.app/api";
+            const DEBUG = true; // Activar para ver errores
+
+            // Función mejorada para hacer requests
+            async function makeRequest(url, options = {}) {
+                console.log("🚀 Haciendo request a:", url);
+                console.log("📝 Opciones:", options);
+
+                try {
+                    const response = await fetch(url, {
+                        ...options,
+                        headers: {
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                            ...options.headers,
+                        },
+                    });
+
+                    console.log("📊 Response status:", response.status);
+                    console.log("📊 Response ok:", response.ok);
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error("❌ Error response:", errorText);
+                        throw new Error(
+                            `HTTP ${response.status}: ${errorText}`,
+                        );
+                    }
+
+                    return response;
+                } catch (error) {
+                    console.error("❌ Request failed:", error);
+                    throw error;
+                }
+            }
+
+            // Form handling
+            document
+                .getElementById("cotizadorForm")
+                .addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const form = e.target;
+                    const submitBtn = form.querySelector(
+                        'button[type="submit"]',
+                    );
+                    const spinner = submitBtn.querySelector(".spinner");
+
+                    // Clear previous results
+                    document.getElementById("results").style.display = "none";
+
+                    // Show loading state
+                    submitBtn.disabled = true;
+                    spinner.style.display = "inline-block";
+
+                    // Get form data
+                    const formData = {
+                        placa: form.placa.value.toUpperCase(),
+                        documentType: form.documentType.value,
+                        documentNumber: form.documentNumber.value,
+                    };
+
+                    if (DEBUG) {
+                        showDebugInfo(
+                            `Enviando solicitud a: ${PROXY_URL}/cotizar`,
+                            formData,
+                        );
+                    }
+
+                    try {
+                        const response = await makeRequest(
+                            `${PROXY_URL}/cotizar`,
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    Accept: "application/json",
+                                },
+                                body: JSON.stringify(formData),
+                            },
+                        );
+
+                        if (!response.ok) {
+                            if (response.type === "opaque") {
+                                showAlert(
+                                    "Solicitud enviada. Si no ves resultados, hay un problema de conectividad.",
+                                    "error",
+                                );
+                                return;
+                            }
+
+                            const errorText = await response.text();
+                            throw new Error(
+                                `Error del servidor: ${response.status}`,
+                            );
+                        }
+
+                        const data = await response.json();
+
+                        displayResults(data);
+                        showAlert(
+                            "Cotización realizada exitosamente",
+                            "success",
+                        );
+                    } catch (error) {
+                        let errorMessage = "Error al procesar la cotización";
+
+                        if (
+                            error.name === "TypeError" &&
+                            error.message.includes("fetch")
+                        ) {
+                            errorMessage =
+                                "Error de conexión. Por favor intenta nuevamente.";
+                        } else if (error.message.includes("CORS")) {
+                            errorMessage =
+                                "Error de conectividad. Contacta al administrador.";
+                        } else if (error.message.includes("HTTP")) {
+                            errorMessage =
+                                "Error del servidor. Intenta más tarde.";
+                        }
+
+                        showAlert(errorMessage, "error");
+                    } finally {
+                        submitBtn.disabled = false;
+                        spinner.style.display = "none";
+                    }
+                });
+
+            // Display results - FUNCIÓN ACTUALIZADA
+            function displayResults(data) {
+                const resultsDiv = document.getElementById("results");
+                const priceDisplay = document.getElementById("priceDisplay");
+                const resultDetails = document.getElementById("resultDetails");
+                const paymentAccounts =
+                    document.getElementById("paymentAccounts");
+                const paymentInstructions = document.getElementById(
+                    "paymentInstructions",
+                );
+
+                // BÚSQUEDA ESPECÍFICA DEL CAMPO TotalWithDiscountAmountFormatted
+                let precio = 0;
+                let fuentePrecio = "No encontrado";
+
+                function buscarPrecioRecursivo(obj, ruta = "") {
+                    if (!obj || typeof obj !== "object") return 0;
+
+                    // PRIORIDAD 1: Campo específico TotalWithDiscountAmountFormatted
+                    if (obj["TotalWithDiscountAmountFormatted"]) {
+                        const valorFormateado =
+                            obj["TotalWithDiscountAmountFormatted"];
+                        // Procesar formato "$590.700" (colombiano: punto = miles)
+                        let numero = valorFormateado.replace(/\$/g, ""); // Quitar $
+                        numero = numero.replace(/\./g, ""); // Quitar puntos (miles)
+                        numero = numero.replace(/,/g, "."); // Comas a decimales
+                        const valor = parseFloat(numero);
+                        if (!isNaN(valor) && valor > 0) {
+                        }
+                    }
+
+                    // PRIORIDAD 2: Otros campos formateados similares
+                    const camposFormateados = [
+                        "TotalAmountFormatted",
+                        "PriceFormatted",
+                        "PremiumFormatted",
+                        "ValueFormatted",
+                    ];
+
+                    for (const campo of camposFormateados) {
+                        if (
+                            obj[campo] &&
+                            typeof obj[campo] === "string" &&
+                            obj[campo].includes("$")
+                        ) {
+                            const valorFormateado = obj[campo];
+                            let numero = valorFormateado.replace(/\$/g, "");
+                            numero = numero.replace(/\./g, "");
+                            numero = numero.replace(/,/g, ".");
+                            const valor = parseFloat(numero);
+                            if (!isNaN(valor) && valor > 0) {
+                                console.log(
+                                    `💰 Precio formateado encontrado en ${ruta}.${campo}: ${valorFormateado} = ${valor}`,
+                                );
+                                fuentePrecio = `${ruta}.${campo}`;
+                                return valor;
+                            }
+                        }
+                    }
+
+                    // PRIORIDAD 3: Campos numéricos
+                    const camposNumericos = [
+                        "TotalWithDiscountAmount",
+                        "TotalAmount",
+                        "Premium",
+                        "Price",
+                        "Value",
+                        "precio",
+                        "valor",
+                        "prima",
+                        "total",
+                        "costo",
+                        "tarifa",
+                    ];
+
+                    for (const campo of camposNumericos) {
+                        if (obj[campo] !== undefined && obj[campo] !== null) {
+                            const valor = parseFloat(obj[campo]);
+                            if (!isNaN(valor) && valor > 0) {
+                                fuentePrecio = `${ruta}.TotalWithDiscountAmountFormatted`;
+                                return valor;
+                            }
+                        }
+                    }
+
+                    // Buscar en objetos anidados
+                    for (const [key, value] of Object.entries(obj)) {
+                        if (typeof value === "object" && value !== null) {
+                            const nuevaRuta = ruta ? `${ruta}.${key}` : key;
+                            const resultado = buscarPrecioRecursivo(
+                                value,
+                                nuevaRuta,
+                            );
+                            if (resultado > 0) return resultado;
+                        }
+                    }
+
+                    return 0;
+                }
+
+                // Buscar precio en toda la respuesta
+                if (data.precio && data.precio > 0) {
+                    precio = data.precio;
+                    fuentePrecio = "data.precio";
+                } else {
+                    precio = buscarPrecioRecursivo(data, "data");
+                    if (
+                        precio === 0 &&
+                        data.debug &&
+                        data.debug.originalResponse
+                    ) {
+                        precio = buscarPrecioRecursivo(
+                            data.debug.originalResponse,
+                            "originalResponse",
+                        );
+                    }
+                }
+
+                // CALCULAR COSTOS CON PLATAFORMA
+                const costoPlataforma = 20000;
+                const totalConPlataforma = precio + costoPlataforma;
+
+                // Mostrar total en el display principal
+                const formattedPrice = new Intl.NumberFormat("es-CO", {
+                    style: "currency",
+                    currency: "COP",
+                    minimumFractionDigits: 0,
+                }).format(totalConPlataforma);
+
+                priceDisplay.textContent = formattedPrice;
+
+                // Extraer información del vehículo
+                let vehicleInfo = {
+                    tipo: data.tipoVehiculo || "AUTOMOVIL",
+                    marca: data.marca || "N/A",
+                    modelo: data.modelo || "N/A",
+                    cilindraje: data.cilindraje || "N/A",
+                    año: data.año || "N/A",
+                };
+
+                if (data.debug && data.debug.vehicleInfoCompleta) {
+                    const vehicleData = data.debug.vehicleInfoCompleta;
+                    vehicleInfo = {
+                        tipo:
+                            vehicleData.tipo ||
+                            data.tipoVehiculo ||
+                            "AUTOMOVIL",
+                        marca: vehicleData.marca || data.marca || "N/A",
+                        modelo: vehicleData.modelo || data.modelo || "N/A",
+                        cilindraje:
+                            vehicleData.cilindraje || data.cilindraje || "N/A",
+                        año: vehicleData.año || data.año || "N/A",
+                    };
+                }
+
+                if (
+                    data.debug &&
+                    data.debug.originalResponse &&
+                    data.debug.originalResponse.data
+                ) {
+                    const apiData = data.debug.originalResponse.data;
+                    vehicleInfo = {
+                        tipo:
+                            apiData.VehicleClassName ||
+                            apiData.VehicleClassMinistryName ||
+                            vehicleInfo.tipo,
+                        marca: apiData.BrandName || vehicleInfo.marca,
+                        modelo:
+                            apiData.VehicleLineDescription ||
+                            vehicleInfo.modelo,
+                        cilindraje:
+                            apiData.CylinderCapacity || vehicleInfo.cilindraje,
+                        año: apiData.VehicleYear || vehicleInfo.año,
+                    };
+                }
+
+                // Build result details CON COSTOS DESGLOSADOS
+                const details = [
+                    { label: "Placa", value: data.placa },
+                    { label: "Tipo de Vehículo", value: vehicleInfo.tipo },
+                    { label: "Marca", value: vehicleInfo.marca },
+                    { label: "Modelo", value: vehicleInfo.modelo },
+                    { label: "Cilindraje", value: vehicleInfo.cilindraje },
+                    { label: "Año", value: vehicleInfo.año },
+                    { label: "Vigencia", value: "1 año" },
+                    {
+                        label: "Inicio de Vigencia",
+                        value: formatDate(data.inicioVigencia || new Date()),
+                    },
+                    {
+                        label: "Fin de Vigencia",
+                        value: formatDate(
+                            data.finVigencia || addYear(new Date()),
+                        ),
+                    },
+                    {
+                        label: "Valor SOAT",
+                        value:
+                            precio > 0
+                                ? new Intl.NumberFormat("es-CO", {
+                                      style: "currency",
+                                      currency: "COP",
+                                      minimumFractionDigits: 0,
+                                  }).format(precio)
+                                : "Consultando...",
+                    },
+                    {
+                        label: "Costo de Plataforma",
+                        value: new Intl.NumberFormat("es-CO", {
+                            style: "currency",
+                            currency: "COP",
+                            minimumFractionDigits: 0,
+                        }).format(costoPlataforma),
+                    },
+                    {
+                        label: "Total a Pagar",
+                        value: new Intl.NumberFormat("es-CO", {
+                            style: "currency",
+                            currency: "COP",
+                            minimumFractionDigits: 0,
+                        }).format(totalConPlataforma),
+                        isTotal: true,
+                    },
+                ];
+
+                resultDetails.innerHTML = details
+                    .map(
+                        (item) => `
+                <div class="result-item ${item.isTotal ? "result-total" : ""}">
+                    <span class="result-label">${item.label}:</span>
+                    <span class="result-value">${item.value}</span>
+                </div>
+            `,
+                    )
+                    .join("");
+
+                // Display payment accounts
+                // if (data.cuentasBancarias) {
+                //     paymentAccounts.innerHTML = data.cuentasBancarias
+                //         .map(
+                //             (cuenta) => `
+                //     <div class="account-info">
+                //         <div class="account-bank">${cuenta.banco}</div>
+                //         <div class="account-number">${cuenta.numero}</div>
+                //         <div class="account-type">${cuenta.tipo}</div>
+                //         ${cuenta.titular ? `<div class="account-type">Titular: ${cuenta.titular}</div>` : ""}
+                //     </div>
+                // `,
+                //         )
+                //         .join("");
+                // }
+
+                // Display payment instructions
+                // if (data.instruccionesPago) {
+                //     paymentInstructions.innerHTML = data.instruccionesPago
+                //         .map(
+                //             (instruccion) => `
+                //     <li>${instruccion}</li>
+                // `,
+                //         )
+                //         .join("");
+                // }
+
+                resultsDiv.style.display = "block";
+            }
+
+            // Show alert
+            function showAlert(message, type) {
+                const alertContainer =
+                    document.getElementById("alertContainer");
+                const alert = document.createElement("div");
+                alert.className = `alert alert-${type}`;
+                alert.textContent = message;
+
+                alertContainer.innerHTML = "";
+                alertContainer.appendChild(alert);
+                alert.style.display = "block";
+
+                setTimeout(() => {
+                    alert.style.display = "none";
+                }, 5000);
+            }
+
+            // Show debug info
+            function showDebugInfo(label, data) {
+                if (!DEBUG) return;
+
+                console.log(`🔍 ${label}`);
+                console.log(data);
+                console.log(`Timestamp: ${new Date().toISOString()}`);
+            }
+
+            // Format date
+            function formatDate(date) {
+                if (typeof date === "string") {
+                    date = new Date(date);
+                }
+                return date.toLocaleDateString("es-CO", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                });
+            }
+
+            // Add year to date
+            function addYear(date) {
+                const newDate = new Date(date);
+                newDate.setFullYear(newDate.getFullYear() + 1);
+                return newDate;
+            }
+
+            // FUNCIÓN MEJORADA DE CAPTURA DE PANTALLA (SIN html2canvas)
+            async function captureScreen() {
+                const captureButton = document.getElementById("captureBtn");
+                const originalContent = captureButton.innerHTML;
+
+                try {
+                    // Cambiar estado del botón
+                    captureButton.innerHTML =
+                        "<span>⏳</span> <span>Capturando...</span>";
+                    captureButton.disabled = true;
+
+                    // Método 1: Screen Capture API (navegadores modernos)
+                    if (
+                        navigator.mediaDevices &&
+                        navigator.mediaDevices.getDisplayMedia
+                    ) {
+                        const stream =
+                            await navigator.mediaDevices.getDisplayMedia({
+                                video: {
+                                    mediaSource: "screen",
+                                    width: { ideal: 1920 },
+                                    height: { ideal: 1080 },
+                                },
+                            });
+
+                        const video = document.createElement("video");
+                        video.srcObject = stream;
+                        video.play();
+
+                        video.onloadedmetadata = () => {
+                            const canvas = document.createElement("canvas");
+                            canvas.width = video.videoWidth;
+                            canvas.height = video.videoHeight;
+                            const ctx = canvas.getContext("2d");
+                            ctx.drawImage(video, 0, 0);
+
+                            canvas.toBlob(
+                                (blob) => {
+                                    downloadImage(blob, "cotizacion-soat");
+                                    showAlert(
+                                        "Captura de pantalla guardada exitosamente",
+                                        "success",
+                                    );
+                                },
+                                "image/png",
+                                1.0,
+                            );
+
+                            // Detener el stream
+                            stream.getTracks().forEach((track) => track.stop());
+                        };
+
+                        return;
+                    }
+
+                    // Método 2: Crear canvas manual de los resultados
+                    console.log("📸 Creando imagen de resultados");
+                    const resultsCard =
+                        document.querySelector(".results").parentElement;
+
+                    // Crear canvas personalizado con los datos importantes
+                    const canvas = document.createElement("canvas");
+                    canvas.width = 800;
+                    canvas.height = 1000;
+                    const ctx = canvas.getContext("2d");
+
+                    // Fondo blanco
+                    ctx.fillStyle = "#ffffff";
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    // Header
+                    ctx.fillStyle = "#e25532";
+                    ctx.fillRect(0, 0, canvas.width, 100);
+
+                    // Título
+                    ctx.fillStyle = "#ffffff";
+                    ctx.font = "bold 32px Arial";
+                    ctx.textAlign = "center";
+                    ctx.fillText(
+                        "Badelco SOAT - Cotización",
+                        canvas.width / 2,
+                        60,
+                    );
+
+                    // Contenido
+                    ctx.fillStyle = "#272626";
+                    ctx.font = "24px Arial";
+                    ctx.textAlign = "left";
+
+                    let y = 150;
+                    const lineHeight = 40;
+
+                    // Obtener datos actuales
+                    const placa = document.getElementById("placa").value;
+                    const precio =
+                        document.getElementById("priceDisplay").textContent;
+
+                    const info = [
+                        `Placa: ${placa}`,
+                        `Precio: ${precio}`,
+
+                        "",
+                        "WhatsApp: 3128433999",
+                    ];
+
+                    info.forEach((line) => {
+                        if (line.startsWith("Información de Pago:")) {
+                            ctx.font = "bold 24px Arial";
+                        } else {
+                            ctx.font = "20px Arial";
+                        }
+                        ctx.fillText(line, 50, y);
+                        y += lineHeight;
+                    });
+
+                    // Descargar imagen
+                    canvas.toBlob(
+                        (blob) => {
+                            downloadImage(blob, "cotizacion-soat");
+                            showAlert(
+                                "Imagen de cotización creada exitosamente",
+                                "success",
+                            );
+                        },
+                        "image/png",
+                        1.0,
+                    );
+                } catch (error) {
+                    console.error("Error capturando pantalla:", error);
+
+                    // Método 3: Fallback - Imprimir
+                    showAlert(
+                        "Abriendo diálogo de impresión como alternativa",
+                        "success",
+                    );
+                    window.print();
+                } finally {
+                    // Restaurar botón
+                    captureButton.innerHTML = originalContent;
+                    captureButton.disabled = false;
+                }
+            }
+
+            // Función auxiliar para descargar imagen
+            function downloadImage(blob, filename) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `${filename}-${new Date().getTime()}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            // NUEVA FUNCIÓN PARA EXPEDIR SOAT
+            function expedirSOAT() {
+                // Obtener datos de la cotización actual
+                const placa = document.getElementById("placa").value;
+                const documentType =
+                    document.getElementById("documentType").value;
+                const documentNumber =
+                    document.getElementById("documentNumber").value;
+
+                if (!placa || !documentType || !documentNumber) {
+                    showAlert(
+                        "Por favor completa primero la cotización",
+                        "error",
+                    );
+                    return;
+                }
+
+                // Construir parámetros para la página de expedición
+                const params = new URLSearchParams({
+                    placa: placa,
+                    documentType: documentType,
+                    documentNumber: documentNumber,
+                    timestamp: new Date().getTime(),
+                });
+
+                // AQUÍ PUEDES CAMBIAR LA URL DE DESTINO
+                const expedicionURL = `https://badelco.co/expedir-soat/?${params.toString()}`;
+
+                // Abrir en nueva ventana/pestaña
+                window.open(expedicionURL, "_blank");
+
+                // Alternativamente, para redireccionar en la misma ventana:
+                // window.location.href = expedicionURL;
+
+                showAlert(
+                    "Redirigiendo a la página de expedición...",
+                    "success",
+                );
+            }
+
+            // Format input
+            document
+                .getElementById("placa")
+                .addEventListener("input", function (e) {
+                    e.target.value = e.target.value.toUpperCase();
+                });
+
+            // Event listeners para botones (sin onclick inline)
+            document.addEventListener("DOMContentLoaded", function () {
+                // Botón capturar pantalla
+                const captureBtn = document.getElementById("captureBtn");
+                if (captureBtn) {
+                    captureBtn.addEventListener("click", captureScreen);
+                }
+
+                // Botón expedir SOAT
+                const expedirBtn = document.getElementById("expedirBtn");
+                if (expedirBtn) {
+                    expedirBtn.addEventListener("click", expedirSOAT);
+                }
+            });
+        </script>
+    </body>
+</html>
