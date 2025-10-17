@@ -65,7 +65,7 @@ app.use(express.static("public"));
 const API_BASE_URL = "https://pagoalafija.co/api/public/";
 const API_KEY = "4aeaa7cc5f23610d9a1b3bb303389262";
 const SECRET_KEY =
-  "$2y$10$XzpKuT6bKjS79yFin/yGx.DfSetyDXPds2LrNBpnDNljqmZll7GLe";
+  "$2y$10$TEMMkRGqvJS280rO87GSgO9eHzZ4l9IXeJhsU/8HnmSGSOyhGmg.C";
 const AUTH_TOKEN =
   "f575bd8fc63df8e07c5ec3a5dea17026a978f51614838041a14c408f4a3a678c";
 const COD_PRODUCTO = 63;
