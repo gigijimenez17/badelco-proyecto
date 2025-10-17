@@ -22,7 +22,7 @@ app.use(
         connectSrc: [
           "'self'",
           "https://dev.same.com.co",
-          "https://test-production-2125.up.railway.app/",
+          "https://https://badelco-proyecto-production.up.railway.app//",
         ],
       },
     },
